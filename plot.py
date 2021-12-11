@@ -27,7 +27,7 @@ def create_plot(all_data, raw, x_scale, y_scale, xn, yn, fn_out, linestyles,
         xs, ys, ls, axs, ays, als = create_pointset(all_data[algo], xn, yn)
         return -np.log(np.array(ys)).mean()
     # Find range for logit x-scale
-    min_x, max_x = 1, 0
+    min_x, max_x = 1, 0.5
     for algo in sorted(all_data.keys(), key=mean_y):
         xs, ys, ls, axs, ays, als = create_pointset(all_data[algo], xn, yn)
         min_x = min([min_x]+[x for x in xs if x > 0])
@@ -93,7 +93,7 @@ if __name__ == "__main__":
     parser.add_argument(
         '--dataset',
         metavar="DATASET",
-        default='glove-100-angular')
+        default='glove-25-euclidean-workload')
     parser.add_argument(
         '--count',
         default=10)
@@ -153,7 +153,7 @@ if __name__ == "__main__":
                            results, args.x_axis, args.y_axis, args.recompute)
     if not runs:
         raise Exception('Nothing to plot')
-
+    print(runs.keys())
     create_plot(runs, args.raw, args.x_scale,
                 args.y_scale, args.x_axis, args.y_axis, args.output,
                 linestyles, args.batch)

@@ -160,6 +160,7 @@ def get_definitions(definition_file, dimension, point_type="float",
                     "@dimension": dimension
                 }
                 aargs = [_substitute_variables(arg, vs) for arg in aargs]
+                print(name)
                 definitions.append(Definition(
                     algorithm=name,
                     docker_tag=algo['docker-tag'],

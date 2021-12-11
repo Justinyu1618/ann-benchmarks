@@ -43,6 +43,7 @@ def compute_metrics(true_nn_distances, res, metric_1, metric_2,
     for i, (properties, run) in enumerate(res):
         algo = properties['algo']
         algo_name = properties['name']
+        print(algo, algo_name)
         # cache distances to avoid access to hdf5 file
         run_distances = numpy.array(run['distances'])
         if recompute and 'metrics' in run:

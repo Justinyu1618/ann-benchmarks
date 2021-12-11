@@ -41,6 +41,7 @@ def run_worker(cpu, args, queue):
         else:
             memory_margin = 500e6  # reserve some extra memory for misc stuff
             mem_limit = int((psutil.virtual_memory().available - memory_margin) / args.parallelism)
+            print(mem_limit >> 20, psutil.virtual_memory().available >> 20)
             cpu_limit = str(cpu)
             if args.batch:
                 cpu_limit = "0-%d" % (multiprocessing.cpu_count() - 1)
@@ -56,7 +57,7 @@ def main():
         '--dataset',
         metavar='NAME',
         help='the dataset to load training points from',
-        default='glove-100-angular',
+        default='glove-25-euclidean-workload',
         choices=DATASETS.keys())
     parser.add_argument(
         "-k", "--count",
@@ -173,7 +174,7 @@ def main():
     if args.algorithm:
         logger.info(f'running only {args.algorithm}')
         definitions = [d for d in definitions if d.algorithm == args.algorithm]
-
+        
     if not args.local:
         # See which Docker images we have available
         docker_client = docker.from_env()

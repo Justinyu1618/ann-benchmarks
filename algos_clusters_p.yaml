@@ -1,0 +1,58 @@
+float:
+  euclidean:
+    annoy:
+      # disabled: true
+      docker-tag: ann-benchmarks-annoy
+      module: ann_benchmarks.algorithms.annoy
+      constructor: Annoy
+      base-args: ["euclidean"]
+      run-groups:
+        annoy:
+          args: [[10, 50]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    flannel:
+      # disabled: true
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10, 50], [30], [0.01], [True], [10]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000], [0.1]]
+    "flannel clusters_p=0.01":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10, 50], [30], [0.01], [True], [10]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000], [0.01]]
+    "flannel clusters_p=0.05":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10, 50], [30], [0.01], [True], [10]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000], [0.05]]
+    "flannel clusters_p=0.2":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10, 50], [30], [0.01], [True], [10]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000], [0.2]]
+    "flannel clusters_p=0.5":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10, 50], [30], [0.01], [True], [10]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000], [0.5]]

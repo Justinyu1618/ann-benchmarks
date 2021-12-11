@@ -96,22 +96,30 @@ def run_individual_query(algo, X_train, X_test, distance, count, run_count,
 
 
 def run(definition, dataset, count, run_count, batch):
+    print(definition.algorithm)
     algo = instantiate_algorithm(definition)
     assert not definition.query_argument_groups \
            or hasattr(algo, "set_query_arguments"), """\
 error: query argument groups have been specified for %s.%s(%s), but the \
 algorithm instantiated from it does not implement the set_query_arguments \
 function""" % (definition.module, definition.constructor, definition.arguments)
-
+    size = 300000
     D, dimension = get_dataset(dataset)
     X_train = numpy.array(D['train'])
     X_test = numpy.array(D['test'])
+
+    # D['train'] = X_train.tolist()
+    # D['test'] = X_test.tolist()
     distance = D.attrs['distance']
+    print("extracted distance: ", distance)
     print('got a train set of size (%d * %d)' % (X_train.shape[0], dimension))
     print('got %d queries' % len(X_test))
 
     X_train, X_test = dataset_transform(D)
-
+    # print(X_train.shape, X_test.shape)
+    X_train, X_test = X_train[:size, :], X_test[:size,:]
+    X_train = numpy.vstack([X_train, X_test])
+    print(X_train.shape)
     try:
         prepared_queries = False
         if hasattr(algo, "supports_prepared_queries"):
@@ -119,7 +127,10 @@ function""" % (definition.module, definition.constructor, definition.arguments)
 
         t0 = time.time()
         memory_usage_before = algo.get_memory_usage()
+        print("doing first fit")
+        print(X_train.shape)
         algo.fit(X_train)
+        print("done fit")
         build_time = time.time() - t0
         index_size = algo.get_memory_usage() - memory_usage_before
         print('Built index in', build_time)
@@ -140,6 +151,7 @@ function""" % (definition.module, definition.constructor, definition.arguments)
                 algo, X_train, X_test, distance, count, run_count, batch)
             descriptor["build_time"] = build_time
             descriptor["index_size"] = index_size
+            # print(definition)
             descriptor["algo"] = definition.algorithm
             descriptor["dataset"] = dataset
             store_results(dataset, count, definition,
@@ -227,7 +239,8 @@ def run_docker(definition, dataset, count, runs, timeout, batch, cpu_limit,
     client = docker.from_env()
     if mem_limit is None:
         mem_limit = psutil.virtual_memory().available
-
+    print(mem_limit, cpu_limit)
+    print("DEF:", definition)
     container = client.containers.run(
         definition.docker_tag,
         cmd,
@@ -239,7 +252,8 @@ def run_docker(definition, dataset, count, runs, timeout, batch, cpu_limit,
             os.path.abspath('results'):
                 {'bind': '/home/app/results', 'mode': 'rw'},
         },
-        cpuset_cpus=cpu_limit,
+        # cpuset_cpus=cpu_limit,
+        cpu_shares=1024,
         mem_limit=mem_limit,
         detach=True)
     logger = logging.getLogger(f"annb.{container.short_id}")
@@ -255,24 +269,20 @@ def run_docker(definition, dataset, count, runs, timeout, batch, cpu_limit,
     t.start()
 
     try:
-        return_value = container.wait(timeout=timeout)
-        _handle_container_return_value(return_value, container, logger)
+        exit_code = container.wait(timeout=timeout)
+
+        # Exit if exit code
+        try:
+            exit_code = exit_code.StatusCode
+        except AttributeError:
+            pass
+        if exit_code not in [0, None]:
+            print("EXIT CODE:", exit_code)
+            if(type(exit_code) != dict):
+                logger.error(colors.color(container.logs().decode(), fg='red'))
+                logger.error('Child process for container %s raised exception %d' % (container.short_id, exit_code))
     except:
         logger.error('Container.wait for container %s failed with exception' % container.short_id)
         traceback.print_exc()
     finally:
         container.remove(force=True)
-
-def _handle_container_return_value(return_value, container, logger):
-    base_msg = 'Child process for container %s' % (container.short_id)
-    if type(return_value) is dict: # The return value from container.wait changes from int to dict in docker 3.0.0
-        error_msg = return_value['Error']
-        exit_code = return_value['StatusCode']
-        msg = base_msg + 'returned exit code %d with message %s' %(exit_code, error_msg)
-    else: 
-        exit_code = return_value
-        msg = base_msg + 'returned exit code %d' % (exit_code)
-
-    if exit_code not in [0, None]:
-        logger.error(colors.color(container.logs().decode(), fg='red'))
-        logger.error(msg)

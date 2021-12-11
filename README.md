@@ -34,7 +34,6 @@ Evaluated
 * [DiskANN](https://github.com/microsoft/diskann): Vamana, Vamana-PQ
 * [Vespa](https://github.com/vespa-engine/vespa)
 * [scipy](https://docs.scipy.org/doc/scipy/reference/spatial.html): cKDTree
-* [vald](https://github.com/vdaas/vald)
 
 Data sets
 =========
@@ -59,8 +58,7 @@ We have a number of precomputed data sets for this. All data sets are pre-split 
 Results
 =======
 
-Interactive plots can be found at <http://ann-benchmarks.com>.
-The following results are all as of 2020-07-12, running all benchmarks on a c5.4xlarge machine on AWS with `--parallelism` set to 3:
+These are all as of 2020-07-12, running all benchmarks on a c5.4xlarge machine on AWS with `--parallelism` set to 3:
 
 glove-100-angular
 -----------------

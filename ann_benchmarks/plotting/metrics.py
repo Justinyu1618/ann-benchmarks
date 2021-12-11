@@ -12,11 +12,15 @@ def epsilon_threshold(data, count, epsilon):
 
 def get_recall_values(dataset_distances, run_distances, count, threshold,
                       epsilon=1e-3):
+    # print(dataset_distances.shape, run_distances.shape, count, threshold)
     recalls = np.zeros(len(run_distances))
     for i in range(len(run_distances)):
         t = threshold(dataset_distances[i], count, epsilon)
+        # print(t)
+
         actual = 0
         for d in run_distances[i][:count]:
+            # print(d)
             if d <= t:
                 actual += 1
         recalls[i] = actual

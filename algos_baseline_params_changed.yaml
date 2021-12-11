@@ -1,0 +1,20 @@
+float:
+  euclidean:
+    annoy:
+      docker-tag: ann-benchmarks-annoy
+      module: ann_benchmarks.algorithms.annoy
+      constructor: Annoy
+      base-args: ["euclidean"]
+      run-groups:
+        annoy:
+          args: [[10, 50]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    flannel:
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10, 50], [3, 5, 7], [0.01, 0.02, 0.05], [True], [10]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000], [0.1]]

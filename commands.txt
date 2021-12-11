@@ -1,0 +1,25 @@
+python3 run.py --algorithm annoy_learned --dataset gist-960-eucli --force
+
+
+
+python run.py --definitions algos_baseline.yaml --dataset glove-25-euclidean-workload --runs 3 --force &
+
+python run.py --definitions algos_clusters.yaml --dataset glove-25-euclidean-workload_clusters --runs 3 --force &
+
+python run.py --definitions algos_top_p.yaml --dataset glove-25-euclidean-workload_top_p --runs 3 --force &
+
+python run.py --definitions algos_clusters_p.yaml --dataset glove-25-euclidean-workload_clusters_p --runs 3 --force &
+
+
+
+python plot.py --dataset glove-25-euclidean-workload --recompute
+
+
+
+
+
+python run.py --definitions algos_clusters.yaml --dataset glove-25-euclidean-workload_clusters --runs 1 &
+
+python run.py --definitions algos_top_p.yaml --dataset glove-25-euclidean-workload_top_p --runs 1 &
+
+python run.py --definitions algos_clusters_p.yaml --dataset glove-25-euclidean-workload_clusters_p --runs 1 &

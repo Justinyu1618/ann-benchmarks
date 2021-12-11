@@ -1,0 +1,7 @@
+FROM ann-benchmarks
+
+RUN export DOCKER_CLIENT_TIMEOUT=120
+RUN export COMPOSE_HTTP_TIMEOUT=120
+RUN git clone https://github.com/jackcook/flannel
+RUN cd flannel && python3 setup.py install
+RUN python3 -c 'import flannel'

@@ -1,0 +1,102 @@
+float:
+  euclidean:
+    annoy:
+      disabled: true
+      docker-tag: ann-benchmarks-annoy
+      module: ann_benchmarks.algorithms.annoy
+      constructor: Annoy
+      base-args: ["euclidean"]
+      run-groups:
+        annoy:
+          args: [[10, 50]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    flannel:
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10], [0.05], [10], [0.5]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    "flannel top_p=0.01 model_p=0.02":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10], [0.01], [10], [0.02]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    "flannel top_p=0.01 model_p=0.05":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10], [0.01], [10], [0.05]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    "flannel top_p=0.01 model_p=0.1":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10], [0.01], [10], [0.1]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    "flannel top_p=0.05 model_p=0.1":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10], [0.05], [10], [0.1]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    "flannel top_p=0.05 model_p=0.25":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10], [0.05], [10], [0.25]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    "flannel top_p=0.05 model_p=0.5":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10], [0.05], [10], [0.5]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    "flannel top_p=0.1 model_p=0.2":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10], [0.1], [10], [0.2]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    "flannel top_p=0.1 model_p=0.5":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10], [0.1], [10], [0.5]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
+    "flannel top_p=0.1 model_p=1":
+      docker-tag: ann-benchmarks-flannel
+      module: ann_benchmarks.algorithms.flannel
+      constructor: Flannel
+      base-args: ["euclidean"]
+      run-groups:
+        flannel:
+          args: [[10], [0.1], [10], [1]]
+          query-args: [[10, 40, 100, 400, 1000, 4000, 10000]]
